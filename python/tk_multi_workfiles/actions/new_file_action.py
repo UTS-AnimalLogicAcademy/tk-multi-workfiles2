@@ -79,8 +79,8 @@ class NewFileAction(Action):
                 raise TankError(
                     "Unable to resolve template fields after folder creation!  This could mean "
                     "there is a mismatch between your folder schema and templates. Please "
-                    "contact us via {} if you need help fixing this.".format(
-                        support_url
+                    "contact us via {url} if you need help fixing this.\n\n{error}".format(
+                        url=support_url, error=str(e)
                     )
                 )
 
@@ -101,10 +101,25 @@ class NewFileAction(Action):
                 FileAction.change_context(self._environment.context)
 
         except Exception as e:
-            error_title = "Failed to complete '%s' action" % self.label
-            QtGui.QMessageBox.information(
-                parent_ui, error_title, "%s:\n\n%s" % (error_title, e)
+            error_title = "Failed to complete '{}' action".format(self.label)
+            error_strs = str(e).split("\n")
+            text = "{title}{text}".format(
+                title=error_title,
+                text="\n\n{}".format(error_strs[0]) if error_strs[0] else "",
             )
+
+            msg_box = QtGui.QMessageBox(
+                QtGui.QMessageBox.Information,
+                error_title,
+                text,
+                QtGui.QMessageBox.Ok,
+                parent_ui,
+            )
+            if error_strs[1:]:
+                msg_box.setDetailedText(" ".join(error_strs[1:]))
+            msg_box.setDefaultButton(QtGui.QMessageBox.Ok)
+            msg_box.exec_()
+
             self._app.log_exception(error_title)
             return False
         else:
