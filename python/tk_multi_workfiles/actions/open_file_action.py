@@ -120,6 +120,7 @@ class OpenFileAction(FileAction):
                 self._app.ensure_folder_exists(dst_dir)
                 # copy file:
                 self._copy_file(src_path, dst_path)
+                self._app.log_debug("Copy file: %s %s" % (src_path, dst_path))
             except Exception as e:
                 QtGui.QMessageBox.critical(
                     parent_ui, "Copy file failed!", "Copy of file failed!\n\n%s!" % e
@@ -132,6 +133,7 @@ class OpenFileAction(FileAction):
         if not new_ctx == self._app.context:
             try:
                 # Change the curent context.
+                self._app.log_debug("Changed the work area to %s!" % new_ctx)
                 FileAction.change_context(new_ctx)
             except Exception as e:
                 QtGui.QMessageBox.critical(
@@ -260,8 +262,8 @@ class CopyAndOpenInCurrentWorkAreaAction(OpenFileAction):
             )
         else:
             msg += " is in a different Work Area (%s)." % (src_work_area.context)
-        msg += "\n\nWould you like to copy the file to your current Work Area (%s)" % (
-            dst_work_area.context
+        msg += "\n\nWould you like to copy the file to your current Work Area (%s | %s)" % (
+            dst_work_area.context, dst_work_area.context.user
         )
         if dst_version:
             msg += " as version v%03d" % dst_version

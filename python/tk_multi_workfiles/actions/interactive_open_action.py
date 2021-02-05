@@ -50,6 +50,7 @@ class InteractiveOpenAction(OpenFileAction):
         max_local_version = max(local_versions) if local_versions else None
         max_publish_version = max(publish_versions) if publish_versions else None
         max_version = max(0, max_local_version or 0, max_publish_version or 0)
+        self._app.log_info("max_version: %s" % max_version)
 
         if (
             self._publishes_visible
@@ -264,8 +265,11 @@ class InteractiveOpenAction(OpenFileAction):
         src_path = None
         work_path = file.path
 
+        # ALA
         # construct a context for this path to determine if it's in
         # a user sandbox or not:
+        dst_context = env.context
+
         if env.context.user:
             current_user = g_user_cache.current_user
             if current_user and current_user["id"] != env.context.user["id"]:
@@ -315,6 +319,18 @@ class InteractiveOpenAction(OpenFileAction):
 
                     src_path = work_path
                     work_path = local_path
+
+                    # ALA insert
+                    dst_context = env.context.sgtk.context_from_path(work_path)
+                    self._app.log_debug("Destination context: %s | %s" % (dst_context, dst_context.user))
+
+        # ALA insert
+        try:
+            self._app.log_metric("Open workfile")
+        except:
+            # ignore all errors. ex: using a core that doesn't support metrics
+            pass
+        # end insert
 
         return self._do_copy_and_open(
             src_path, work_path, None, not file.editable, env.context, parent_ui

@@ -56,7 +56,7 @@ class FileAction(Action):
             # a hook.
             app.sgtk.create_filesystem_structure(
                 ctx_entity.get("type"),
-                ctx_entity.get("id"),
+                int(ctx_entity.get("id")),  # We restricted id to int in the previous repo
                 engine=app.engine.instance_name,
             )
         finally:
