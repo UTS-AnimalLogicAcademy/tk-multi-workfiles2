@@ -117,6 +117,11 @@ class SceneOperation(HookClass):
             # save the current script:
             nuke.scriptSave()
 
+        # prepare_new added from 2017 ALA customisation
+        elif operation == "prepare_new":
+            # open and execute the nuke startup script script
+            execfile(dict(os.environ).get('NUKE_STARTUP_SCRIPT',''))
+
         elif operation == "save_as":
             old_path = nuke.root()["name"].value()
             try:

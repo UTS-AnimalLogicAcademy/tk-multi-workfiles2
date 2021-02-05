@@ -81,6 +81,11 @@ class SceneOperation(HookClass):
             # first rename the scene as file_path:
             cmds.file(rename=file_path)
 
+            # naomi: the following file type section was previously simplified by dan to...
+            # # force .ma, disallow .ma
+            # cmds.file(save=True, force=True, type="mayaBinary")
+            # end naomi comment
+
             # Maya can choose the wrong file type so
             # we should set it here explicitely based
             # on the extension
