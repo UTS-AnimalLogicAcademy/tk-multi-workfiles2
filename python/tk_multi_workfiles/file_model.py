@@ -1048,7 +1048,9 @@ class FileModel(QtGui.QStandardItemModel):
             # ignore result
             return
 
-        users = list(work_area.sandbox_users)
+        # # Used to be
+        # users = list(work_area.sandbox_users)
+        users = [user for user in work_area.sandbox_users if user]
 
         # If users were found.
         if users:

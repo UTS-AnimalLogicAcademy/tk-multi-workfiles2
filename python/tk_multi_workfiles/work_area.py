@@ -203,10 +203,22 @@ class WorkArea(object):
         :returns: List of users inside the all sandboxes
         """
         sandbox_users = self.work_area_sandbox_users
-        user_ids = set([u["id"] for u in sandbox_users])
+        # # Used to be
+        # user_ids = set([u["id"] for u in sandbox_users])
+
+        user_ids = set()
+
+        for sandbox_user in sandbox_users:
+            user_id = sandbox_user.get("id")
+            if user_id:
+                user_ids.add(user_id)
+
         for user in self.publish_area_sandbox_users:
-            user_id = user["id"]
-            if user_id not in user_ids:
+            # # Used to be
+            # user_id = user["id"]
+            # if user_id not in user_ids:
+            user_id = user.get("id")
+            if user_id and user_id not in user_ids:
                 sandbox_users.append(user)
                 user_ids.add(user_id)
         return sandbox_users
