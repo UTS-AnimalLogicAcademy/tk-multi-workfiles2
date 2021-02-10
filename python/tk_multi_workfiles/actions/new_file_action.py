@@ -14,7 +14,7 @@ Action to create a new file.
 
 from sgtk import TankError
 from sgtk.platform.qt import QtGui
-from sgtk import support_url
+# from sgtk import support_url      # commented out because unable to import support_url from sgtk 2021-02-10
 
 from .file_action import FileAction
 from .action import Action
@@ -76,13 +76,13 @@ class NewFileAction(Action):
                     "Unable to resolve template fields after folder creation!"
                 )
                 # and raise a new, clearer exception for this specific use case:
-                raise TankError(
-                    "Unable to resolve template fields after folder creation!  This could mean "
-                    "there is a mismatch between your folder schema and templates. Please "
-                    "contact us via {} if you need help fixing this.".format(
-                        support_url
-                    )
-                )
+                # raise TankError(
+                #     "Unable to resolve template fields after folder creation!  This could mean "
+                #     "there is a mismatch between your folder schema and templates. Please "
+                #     "contact us via {} if you need help fixing this.".format(
+                #         support_url
+                #     )
+                # )
 
             # reset the current scene:
             if not reset_current_scene(
