@@ -2,7 +2,7 @@
 
 name = 'tk_multi_workfiles2'
 
-version = '0.8.00.01'
+version = '0.8.00.00'
 
 description = \
     """
